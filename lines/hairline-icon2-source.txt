@@ -1,0 +1,4 @@
+Icon2.svg  viewBox 0 0 38 27  (1.4:1)  24 shapes in 0 groups
+title: none   ids: none
+shapes: 24 path
+no browser: boxes and the picture were not taken; read the SVG's own text for them

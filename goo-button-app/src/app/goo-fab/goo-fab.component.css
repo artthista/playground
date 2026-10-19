@@ -1,0 +1,226 @@
+:host {
+  display: block;
+  position: relative;
+  width: 0;
+  height: 0;
+  perspective: 1100px;
+
+  --spring: cubic-bezier(.34, 1.42, .5, 1);
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --scale: 1;
+}
+
+@media (max-width: 560px) {
+  :host {
+    --scale: .82;
+  }
+}
+
+.tilt {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform: scale(var(--scale)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform .5s var(--ease);
+}
+
+.goo {
+  position: absolute;
+  inset: 0;
+  filter: url(#goo) drop-shadow(0 26px 34px rgba(0, 0, 0, .4));
+}
+
+.shape {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  transition:
+    transform .58s var(--spring),
+    background-color .34s var(--ease) .12s,
+    border-radius .58s var(--spring);
+}
+
+.shape--core {
+  width: 106px;
+  height: 106px;
+  border-radius: 33px;
+  background-color: #000000;
+  /* Preto */
+}
+
+.shape--opt {
+  width: 182px;
+  height: 106px;
+  border-radius: 34px;
+  background-color: #000000;
+  /* Preto */
+  transform: translate(-50%, -50%) scale(.46);
+}
+
+.is-open .shape--a,
+.is-open .shape--b {
+  /* Mantém a cor preta nas opções para criar a malha perfeita sem bordas transparentes */
+  background-color: #000000;
+}
+
+.is-open .shape--a {
+  transform: translate(calc(-50% - 108px), calc(-50% + 88px)) scale(1);
+}
+
+.is-open .shape--b {
+  transform: translate(calc(-50% + 108px), calc(-50% + 88px)) scale(1);
+}
+
+.faces {
+  position: absolute;
+  inset: 0;
+}
+
+.face {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.face--core {
+  width: 106px;
+  height: 106px;
+  border-radius: 33px;
+  background: linear-gradient(155deg,
+      rgba(255, 255, 255, .15),
+      rgba(255, 255, 255, 0) 42%,
+      rgba(0, 0, 0, .4));
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, .2),
+    inset 0 -14px 24px rgba(0, 0, 0, .6);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.face--core:active {
+  transform: translate(-50%, -50%) scale(.95);
+}
+
+.face--core:focus-visible {
+  outline: 3px solid #666;
+  outline-offset: 6px;
+}
+
+.face--opt {
+  width: 182px;
+  height: 106px;
+  border-radius: 34px;
+  background: #ffffff;
+  /* Fundo branco para os botões de opção se destacarem do preto */
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, .9),
+    inset 0 -10px 20px rgba(0, 0, 0, .05);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.46);
+  transition:
+    transform .58s var(--spring),
+    opacity .26s var(--ease);
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: #000;
+  /* Texto preto para combinar */
+  cursor: pointer;
+  gap: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.is-open .face--opt {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0s, .16s;
+}
+
+.is-open .face--a {
+  transform: translate(calc(-50% - 108px), calc(-50% + 88px)) scale(1);
+}
+
+.is-open .face--b {
+  transform: translate(calc(-50% + 108px), calc(-50% + 88px)) scale(1);
+}
+
+.face--opt:active {
+  filter: brightness(.96);
+}
+
+.face--opt:focus-visible {
+  outline: 3px solid #666;
+  outline-offset: 5px;
+}
+
+.chip {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #f0f0f0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .85),
+    0 2px 6px rgba(0, 0, 0, .1);
+}
+
+.chip svg {
+  width: 22px;
+  height: 22px;
+  stroke: #000;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.face--opt span:last-child {
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  line-height: 1;
+  font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.cross {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  transition: transform .55s var(--spring);
+}
+
+.cross i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30px;
+  height: 3px;
+  border-radius: 2px;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .35);
+  transform: translate(-50%, -50%);
+}
+
+.cross i:last-child {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.is-open .cross {
+  transform: rotate(135deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: .01ms !important;
+  }
+}

@@ -1,0 +1,8 @@
+﻿:host {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  background: #fff;
+}
+.figure-frame { width: min(400px, 100vw); aspect-ratio: 5 / 4; }
+iframe { display: block; width: 100%; height: 100%; border: 0; }

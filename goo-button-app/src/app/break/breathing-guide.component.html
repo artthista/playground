@@ -1,0 +1,82 @@
+<section class="breathing-guide" [class.breathing-guide--running]="isRunning()">
+  <header class="breathing-guide__header">
+    <div class="breathing-guide__logo" aria-hidden="true"></div>
+
+    <button
+      type="button"
+      class="breathing-guide__back"
+      [disabled]="!isRunning()"
+      (click)="back()"
+      aria-label="Voltar à etapa anterior"
+    >
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+        stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+        stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5M11 6l-6 6 6 6" />
+      </svg>
+      Voltar
+    </button>
+
+    @if (isRunning()) {
+      <span class="breathing-guide__counter" aria-live="polite">
+        Etapa {{ index() + 1 }} de {{ steps().length }}
+      </span>
+    }
+  </header>
+
+  <main class="breathing-guide__stage">
+    <div
+      class="breathing-guide__breath"
+      [class.breathing-guide__breath--inhale]="phase() === 'inhale'"
+      [class.breathing-guide__breath--hold]="phase() === 'hold'"
+      [class.breathing-guide__breath--exhale]="phase() === 'exhale'"
+      [style.--breath-duration]="currentDuration() + 'ms'"
+    >
+      <div class="breathing-guide__ring breathing-guide__ring--outer" aria-hidden="true"></div>
+      <div class="breathing-guide__ring breathing-guide__ring--inner" aria-hidden="true"></div>
+
+      <div
+        class="breathing-guide__blob"
+        [class.breathing-guide__blob--inhale]="phase() === 'inhale'"
+        [class.breathing-guide__blob--hold]="phase() === 'hold'"
+        [class.breathing-guide__blob--exhale]="phase() === 'exhale'"
+        aria-hidden="true"
+      >
+        <span class="breathing-guide__blob-glint"></span>
+        <span class="breathing-guide__blob-layer"></span>
+      </div>
+    </div>
+
+    <div
+      class="breathing-guide__label"
+      [class.breathing-guide__label--hidden]="labelHidden()"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <h1 class="breathing-guide__title">{{ label().title }}</h1>
+      <p class="breathing-guide__subtitle">{{ label().subtitle }}</p>
+    </div>
+  </main>
+
+  <footer class="breathing-guide__footer">
+    @if (isRunning()) {
+      <div class="breathing-guide__progress" aria-label="Etapas da respiração">
+        @for (step of steps(); track $index) {
+          <button
+            type="button"
+            class="breathing-guide__dot"
+            [class.breathing-guide__dot--active]="$index === index()"
+            [attr.aria-label]="'Ir para etapa ' + ($index + 1) + ': ' + step.title"
+            [attr.aria-current]="$index === index() ? 'step' : null"
+            (click)="goTo($index)"
+          ></button>
+        }
+      </div>
+      <p class="breathing-guide__hint">Uma etapa de cada vez</p>
+    } @else {
+      <button type="button" class="breathing-guide__start" (click)="start()">
+        {{ startLabel() }}
+      </button>
+    }
+  </footer>
+</section>

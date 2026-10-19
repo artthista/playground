@@ -1,0 +1,39 @@
+﻿<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Planta — Hairline</title><style>
+:root{color-scheme:light;--ground:#fff;--ink:#232327;--muted:#6f6f78;--line:#e0e0e4;--crease:#93939b} @media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--ground:#08090a;--ink:#d0d6e0;--muted:#8a8c95;--line:#29292d;--crease:#858b95}} :root[data-theme=dark]{color-scheme:dark;--ground:#08090a;--ink:#d0d6e0;--muted:#8a8c95;--line:#29292d;--crease:#858b95}:root[data-theme=light]{color-scheme:light}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px 16px;background:var(--ground);color:var(--ink);font:13px/1.5 ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}main{width:100%;max-width:640px}.plate{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden}.tag,.label,button{font:11px/1 ui-monospace,monospace}.tag{position:absolute;top:12px;left:14px;color:var(--muted)}svg{display:block;width:100%;height:auto}.edge{fill:var(--ground);stroke:var(--ink);stroke-width:1.08;stroke-linecap:round;stroke-linejoin:round}.fine{fill:none;stroke:var(--crease);stroke-width:.85;stroke-linecap:round;stroke-linejoin:round}.plan{fill:none;stroke:var(--ink);stroke-width:1;stroke-linecap:round;stroke-linejoin:round}.controls{display:flex;align-items:center;gap:10px;margin-top:14px}.label{color:var(--muted)}button{height:32px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}button:focus-visible{outline:1.5px solid var(--ink);outline-offset:2px}.description{margin:14px 0 0}
+</style></head><body><main><div class="plate"><span class="tag">planta</span><svg viewBox="0 0 400 320" role="img" aria-label="Rolo de papel parcialmente aberto, mostrando uma planta arquitetônica"><defs><clipPath id="opening" clipPathUnits="userSpaceOnUse"><polygon id="opening-edge" points="78,131 400,40 400,220 168,189"/></clipPath><clipPath id="sheet-clip"><path d="M78 131 L224 96 Q228 95 231 98 L335 144 Q339 146 337 149 L176 190 Q171 191 168 189 L78 145 Z"/></clipPath></defs>
+<!-- A slightly higher viewpoint gives the plan more room to read. -->
+<g transform="translate(0 -92) scale(1 1.65)">
+<g id="revealed" clip-path="url(#opening)"><g id="paper"><path class="edge" d="M78 131 L224 96 Q228 95 231 98 L335 144 Q339 146 337 149 L176 190 Q171 191 168 189 L78 145 Z"/><path class="fine" d="M174 187 L333 147"/></g>
+<g id="drawing" clip-path="url(#sheet-clip)">
+<!-- A three-room residential plan. Gaps in walls are real door and window openings. -->
+<g transform="matrix(1 -.20 .55 .70 125 129)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Exterior walls, with an entrance and four window openings. -->
+  <g stroke="var(--ink)" stroke-width="2.1">
+    <path d="M0 0 H15 M31 0 H74 M91 0 H105 V10 M105 23 V62 H61 M50 62 H0 V47 M0 34 V0"/>
+  </g>
+  <!-- Two rooms above and a living area below; openings connect each room. -->
+  <g stroke="var(--ink)" stroke-width="1.5">
+    <path d="M52 0 V38 M0 38 H18 M28 38 H69 M79 38 H105"/>
+  </g>
+  <g stroke="var(--crease)" stroke-width=".7">
+    <!-- Door leaves and quarter-circle swings. -->
+    <path d="M18 38 V28 M18 28 A10 10 0 0 1 28 38 M69 38 V28 M69 28 A10 10 0 0 1 79 38 M50 62 V51 M50 51 A11 11 0 0 1 61 62"/>
+    <!-- Double-line glazing between wall ends. -->
+    <path d="M15 0 H31 M15 2 H31 M74 0 H91 M74 2 H91 M105 10 V23 M103 10 V23 M0 34 V47 M2 34 V47"/>
+    <!-- A bed, a sofa and a small table make the rooms legible without clutter. -->
+    <rect x="9" y="8" width="25" height="17" rx="1.5"/><path d="M11 12 H32"/>
+    <rect x="70" y="8" width="23" height="12" rx="2"/><path d="M73 8 V20 M90 8 V20"/>
+    <circle cx="76" cy="51" r="5"/>
+  </g>
+</g>
+</g>
+</g><g id="roll"><path class="edge" d="M78 131 C76 127 77 122 80 119 C83 116 87 117 91 119 L178 163 C182 165 183 170 181 175 C179 181 175 188 170 189 L80 143 C77 141 76 136 78 131 Z"/><path class="fine" d="M80 120 C83 117 87 119 91 121 L177 165 C180 167 181 170 180 174 C178 178 175 181 172 180 C170 179 170 176 172 174 C173 173 175 173 176 174"/></g></g></svg></div><div class="controls"><span class="label">theme</span><button id="theme" type="button" aria-label="Alternar tema">dark</button><span class="label">animation</span><button id="replay" type="button">Replay</button></div><p class="description">Uma planta que se abre para novos projetos.</p></main><script>const root=document.documentElement,theme=document.querySelector('#theme');function themeLabel(){const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;theme.textContent=dark?'light':'dark'}theme.addEventListener('click',()=>{const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;root.dataset.theme=dark?'light':'dark';themeLabel()});matchMedia('(prefers-color-scheme: dark)').addEventListener('change',themeLabel);themeLabel();
+// A single shared boundary follows the roll across the sheet; the drawing is
+// also clipped to the paper itself. The final pose remains the source geometry.
+const edge=document.querySelector('#opening-edge'), roll=document.querySelector('#roll');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');let frame=0;
+function pose(progress, lift=0){const dx=146*(1-progress),dy=-35*(1-progress)+lift;roll.setAttribute('transform',`translate(${dx} ${dy})`);edge.setAttribute('points',`${78+dx},${131+dy} 400,40 400,240 ${168+dx},${189+dy}`)}
+function ease(t){return 1-Math.pow(1-t,3)}
+function play(){cancelAnimationFrame(frame);if(reduced.matches){pose(1);return}let start;pose(0,-3);function tick(now){if(start===undefined)start=now;const t=now-start;const approach=Math.min(t/230,1);const opening=Math.max(0,Math.min((t-180)/1050,1));const settle=t<1230?0:Math.sin(Math.min((t-1230)/260,1)*Math.PI)*.55;pose(ease(opening),-3*(1-ease(approach))+settle);if(t<1490)frame=requestAnimationFrame(tick);else pose(1)}frame=requestAnimationFrame(tick)}
+document.querySelector('#replay').addEventListener('click',play);reduced.addEventListener('change',()=>{if(reduced.matches){cancelAnimationFrame(frame);pose(1)}});play();</script></body></html>

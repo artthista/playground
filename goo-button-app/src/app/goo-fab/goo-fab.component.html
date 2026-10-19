@@ -1,0 +1,49 @@
+<div class="tilt" #tilt [class.is-open]="open">
+  <div class="goo" aria-hidden="true">
+    <div class="shape shape--core"></div>
+    <div class="shape shape--opt shape--a"></div>
+    <div class="shape shape--opt shape--b"></div>
+  </div>
+
+  <div class="faces">
+    <button type="button" class="face face--core" #core [attr.aria-expanded]="open" aria-label="Abrir opções"
+      aria-controls="opt-insumo opt-servico" (click)="onCoreClick($event)">
+      <span class="cross" aria-hidden="true"><i></i><i></i></span>
+    </button>
+
+    <button type="button" class="face face--opt face--a" id="opt-insumo" [tabIndex]="open ? 0 : -1"
+      (click)="onOptionClick($event, 'insumo')">
+      <span class="chip" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 3 4 7v10l8 4 8-4V7z" />
+          <path d="M4 7l8 4 8-4" />
+          <path d="M12 11v10" />
+        </svg>
+      </span>
+      <span>insumo</span>
+    </button>
+
+    <button type="button" class="face face--opt face--b" id="opt-servico" [tabIndex]="open ? 0 : -1"
+      (click)="onOptionClick($event, 'servico')">
+      <span class="chip" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M14.5 3.5a4.5 4.5 0 0 0-5.9 5.7L3.6 14.2a2 2 0 1 0 2.8 2.8l5-5a4.5 4.5 0 0 0 5.7-5.9l-2.6 2.6-2.1-2.1z" />
+          <path d="M14.8 14.8 20 20" />
+        </svg>
+      </span>
+      <span>serviço</span>
+    </button>
+  </div>
+</div>
+
+<!-- Filtro SVG necessário para o efeito "Gosma/Mesh" -->
+<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+      <feBlend in="SourceGraphic" in2="goo" />
+    </filter>
+  </defs>
+</svg>

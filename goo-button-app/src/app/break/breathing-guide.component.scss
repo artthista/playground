@@ -1,0 +1,465 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+
+  --ink: #111923;
+  --ink-soft: #60738c;
+  --blue: #9dc9ff;
+  --ease-breath: cubic-bezier(0.45, 0, 0.35, 1);
+}
+
+/* ======================================================
+   Tela e fotografia de céu
+   Coloque breathing-sky.webp em src/assets/images/
+   ====================================================== */
+
+.breathing-guide {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  color: var(--ink);
+  background: #c8e2ff;
+}
+
+.breathing-guide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: url('../../assets/images/breathing-sky.webp');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: scale(1.01);
+}
+
+/* Mantém contraste no centro sem esconder a fotografia. */
+.breathing-guide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 44% 50% at 50% 48%,
+      rgba(227, 240, 255, 0.20) 0%,
+      rgba(227, 240, 255, 0.08) 55%,
+      transparent 100%),
+    linear-gradient(180deg,
+      rgba(228, 240, 255, 0.12) 0%,
+      transparent 35%,
+      rgba(226, 239, 255, 0.10) 100%);
+}
+
+/* ======================================================
+   Header
+   ====================================================== */
+
+.breathing-guide__header {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+  padding: 20px 24px;
+}
+
+.breathing-guide__logo {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: #111923;
+}
+
+.breathing-guide__logo::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border: 2px solid white;
+  border-radius: 3px;
+}
+
+.breathing-guide__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border: 0;
+  color: #26384d;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 180ms ease;
+}
+
+.breathing-guide__back:disabled {
+  opacity: 0.48;
+  cursor: default;
+}
+
+.breathing-guide__back:not(:disabled):hover {
+  opacity: 0.72;
+}
+
+.breathing-guide__back:focus-visible,
+.breathing-guide__dot:focus-visible,
+.breathing-guide__start:focus-visible {
+  outline: 2px solid #286fc5;
+  outline-offset: 4px;
+}
+
+.breathing-guide__counter {
+  margin-left: auto;
+  color: #425c78;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ======================================================
+   Palco central
+   ====================================================== */
+
+.breathing-guide__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 1;
+  min-height: 0;
+}
+
+.breathing-guide__breath {
+  --_scale: 0.96;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(74vh, 590px, 72vw);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  transform: scale(var(--_scale));
+  transition: transform var(--breath-duration, 1200ms) var(--ease-breath);
+}
+
+.breathing-guide__breath--inhale {
+  --_scale: 1.03;
+}
+
+.breathing-guide__breath--hold {
+  --_scale: 1.03;
+}
+
+.breathing-guide__breath--exhale {
+  --_scale: 0.91;
+}
+
+/* Anéis finos e claros como na referência. */
+.breathing-guide__ring {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.breathing-guide__ring--outer {
+  inset: -1%;
+  opacity: 0.92;
+}
+
+.breathing-guide__ring--inner {
+  inset: 7%;
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* ======================================================
+   Esfera orgânica de vidro/gel
+   A forma usa CSS e não exige canvas, SVG filter ou JS.
+   ====================================================== */
+
+@keyframes breathing-guide-organic {
+  0% {
+    border-radius: 49% 51% 46% 54% / 46% 50% 50% 54%;
+    rotate: -2deg;
+  }
+
+  50% {
+    border-radius: 44% 56% 53% 47% / 53% 43% 57% 47%;
+    rotate: 1.5deg;
+  }
+
+  100% {
+    border-radius: 54% 46% 48% 52% / 45% 56% 44% 55%;
+    rotate: -1deg;
+  }
+}
+
+.breathing-guide__blob {
+  position: relative;
+  isolation: isolate;
+  width: 84%;
+  aspect-ratio: 1;
+  overflow: visible;
+  border: 1px solid rgba(255, 255, 255, 0.84);
+  border-radius: 49% 51% 46% 54% / 46% 50% 50% 54%;
+  background:
+    radial-gradient(ellipse 36% 28% at 29% 24%,
+      rgba(255, 255, 255, 0.99) 0%,
+      rgba(255, 255, 255, 0.78) 42%,
+      transparent 100%),
+    radial-gradient(ellipse 27% 38% at 77% 37%,
+      rgba(111, 174, 255, 0.36) 0%,
+      rgba(173, 211, 255, 0.18) 48%,
+      transparent 100%),
+    radial-gradient(ellipse 48% 42% at 70% 76%,
+      rgba(255, 251, 244, 0.98) 0%,
+      rgba(255, 255, 255, 0.42) 48%,
+      transparent 100%),
+    radial-gradient(ellipse 54% 60% at 23% 72%,
+      rgba(137, 190, 255, 0.70) 0%,
+      rgba(181, 215, 255, 0.38) 48%,
+      transparent 100%),
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.97) 0%,
+      rgba(224, 240, 255, 0.84) 40%,
+      rgba(176, 211, 255, 0.72) 100%);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.98),
+    inset 8px 6px 24px rgba(255, 255, 255, 0.88),
+    inset -10px -12px 30px rgba(92, 155, 239, 0.22),
+    0 22px 48px -28px rgba(42, 111, 202, 0.44);
+  animation: breathing-guide-organic 9s ease-in-out infinite alternate;
+  will-change: border-radius, rotate;
+}
+
+/* Segunda película translúcida deslocada, criando borda de gel. */
+.breathing-guide__blob-layer {
+  position: absolute;
+  inset: -2.8%;
+  z-index: -1;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 44% 56% 51% 49% / 53% 44% 56% 47%;
+  background:
+    radial-gradient(ellipse at 28% 22%,
+      rgba(255, 255, 255, 0.44),
+      transparent 58%),
+    radial-gradient(ellipse at 76% 70%,
+      rgba(122, 185, 255, 0.20),
+      transparent 62%);
+  pointer-events: none;
+}
+
+/* Reflexo especular: pequeno e estático para poupar renderização. */
+.breathing-guide__blob-glint {
+  position: absolute;
+  top: 9%;
+  left: 15%;
+  z-index: 2;
+  width: 35%;
+  height: 19%;
+  border-radius: 50%;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(255, 255, 255, 0.10));
+  filter: blur(5px);
+  transform: rotate(-31deg);
+  pointer-events: none;
+}
+
+.breathing-guide__blob--inhale {
+  animation-duration: 4s;
+}
+
+.breathing-guide__blob--hold {
+  animation-duration: 3.5s;
+}
+
+.breathing-guide__blob--exhale {
+  animation-duration: 6s;
+}
+
+/* ======================================================
+   Texto
+   ====================================================== */
+
+.breathing-guide__label {
+  position: relative;
+  z-index: 3;
+  max-width: 90%;
+  padding: 12px;
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.breathing-guide__label--hidden {
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.breathing-guide__title {
+  margin: 0;
+  color: #101722;
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.24);
+}
+
+.breathing-guide__subtitle {
+  margin: 8px 0 0;
+  color: #526b87;
+  font-size: clamp(15px, 1.4vw, 20px);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ======================================================
+   Footer e progresso
+   ====================================================== */
+
+.breathing-guide__footer {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-height: 104px;
+  padding: 14px 24px 24px;
+}
+
+.breathing-guide__progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.breathing-guide__dot {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.breathing-guide__dot::after {
+  content: '';
+  width: 22px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(68, 113, 166, 0.28);
+  transition: width 220ms ease, height 220ms ease, background-color 220ms ease;
+}
+
+.breathing-guide__dot--active::after {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #347ed6;
+}
+
+.breathing-guide__hint {
+  margin: 8px 0 0;
+  color: #536d8a;
+  font-size: 13px;
+}
+
+.breathing-guide__start {
+  padding: 14px 42px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #111923;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.breathing-guide__start:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -12px rgba(17, 25, 35, 0.45);
+}
+
+.breathing-guide__start:active {
+  transform: scale(0.98);
+}
+
+/* ======================================================
+   Responsividade
+   ====================================================== */
+
+@media (max-width: 700px) {
+  .breathing-guide__header {
+    padding: 16px 18px;
+  }
+
+  .breathing-guide__breath {
+    width: min(82vw, 430px);
+  }
+
+  .breathing-guide__footer {
+    min-height: 92px;
+    padding-bottom: 18px;
+  }
+
+  .breathing-guide__title {
+    font-size: clamp(27px, 7vw, 34px);
+  }
+
+  .breathing-guide__subtitle {
+    font-size: 16px;
+  }
+}
+
+@media (max-height: 650px) {
+  .breathing-guide__header {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .breathing-guide__breath {
+    width: min(58vh, 430px, 72vw);
+  }
+
+  .breathing-guide__footer {
+    min-height: 72px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+  }
+}
+
+/* ======================================================
+   Acessibilidade
+   ====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .breathing-guide__blob {
+    animation: none;
+    will-change: auto;
+  }
+
+  .breathing-guide__breath,
+  .breathing-guide__label,
+  .breathing-guide__dot::after,
+  .breathing-guide__start {
+    transition-duration: 0.01ms;
+  }
+}
